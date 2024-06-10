@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Название сущности: Кредитный договор
+model CreditContract {
+  id              Int           @id @default(autoincrement())
+  number          String
+  issueDate       DateTime
+  creditAmount    Float
+  usagePeriod     Int
+  interestRate    Float
+  monthlyPayment  Float
+  clientId        Int
+  creditExpertId  Int
+  creditPurposeId Int
+  accountId       Int
+  client          Client        @relation(name: "ClientRelation", fields: [clientId], references: [id])
+  creditExpert    Client        @relation(name: "CreditExpertRelation", fields: [creditExpertId], references: [id])
+  creditPurpose   CreditPurpose @relation(fields: [creditPurposeId], references: [id])
+  account         Account       @relation(fields: [accountId], references: [id])
+}
+
+// Название сущности: Клиент
+model Client {
+  id                    Int                  @id @default(autoincrement())
+  taxId                 String
+  registrationNumber    String
+  personId              Int
+  person                Person               @relation(fields: [personId], references: [id])
+  creditContracts       CreditContract[]     @relation("ClientRelation")
+  creditExpertContracts CreditContract[]     @relation("CreditExpertRelation")
+  employmentContracts   EmploymentContract[]
+}
+
+// Название сущности: Трудовой договор
+model EmploymentContract {
+  id         Int       @id @default(autoincrement())
+  startDate  DateTime
+  endDate    DateTime?
+  salary     Float
+  personId   Int
+  positionId Int
+  bankId     Int
+  person     Person    @relation(fields: [personId], references: [id])
+  position   Position  @relation(fields: [positionId], references: [id])
+  bank       Bank      @relation(fields: [bankId], references: [id])
+  Client     Client?   @relation(fields: [clientId], references: [id])
+  clientId   Int?
+}
+
+// Название сущности: Физическое лицо
+model Person {
+  id                  Int                  @id @default(autoincrement())
+  lastName            String
+  firstName           String
+  middleName          String
+  birthDate           DateTime
+  passportNumber      String
+  passportSeries      String
+  issuedBy            String
+  issueDate           DateTime
+  addressId           Int
+  address             Address              @relation(fields: [addressId], references: [id])
+  employmentContracts EmploymentContract[]
+  clients             Client[]
+}
+
+// Название сущности: Адрес
+model Address {
+  id              Int      @id @default(autoincrement())
+  houseNumber     String
+  apartmentNumber String
+  postalCode      String
+  localityId      Int
+  locality        Locality @relation(fields: [localityId], references: [id])
+  streetId        Int
+  street          Street   @relation(fields: [streetId], references: [id])
+  bankId          Int?
+  bank            Bank?    @relation(fields: [bankId], references: [id])
+  Person          Person[]
+}
+
+// Название сущности: Населенный пункт
+model Locality {
+  id           Int          @id @default(autoincrement())
+  localityCode String
+  name         String
+  localityType LocalityType
+  addresses    Address[]
+}
+
+// Название сущности: Цель кредита
+model CreditPurpose {
+  id              Int              @id @default(autoincrement())
+  name            String
+  creditContracts CreditContract[]
+}
+
+// Название сущности: Валюта
+model Currency {
+  id           Int       @id @default(autoincrement())
+  code         String
+  name         String
+  shortName    String
+  exchangeRate Float
+  accounts     Account[]
+}
+
+// Название сущности: Счет
+model Account {
+  id              Int              @id @default(autoincrement())
+  number          String
+  currencyId      Int
+  accountType     AccountType
+  currency        Currency         @relation(fields: [currencyId], references: [id])
+  creditContracts CreditContract[]
+}
+
+// Название сущности: Должность
+model Position {
+  id                  Int                  @id @default(autoincrement())
+  name                String
+  employmentContracts EmploymentContract[]
+}
+
+// Название сущности: Банк
+model Bank {
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  bic                  String
+  correspondentAccount String
+  centralBankRegNumber String
+  bankType             BankType
+  employmentContracts  EmploymentContract[]
+  address              Address[]
+}
+
+// Название сущности: Улица
+model Street {
+  id         Int        @id @default(autoincrement())
+  name       String
+  streetType StreetType
+  addresses  Address[]
+}
+
+// Название сущности: Тип населенного пункта
+enum LocalityType {
+  CITY
+  TOWN
+  VILLAGE
+}
+
+// Название сущности: Тип счета
+enum AccountType {
+  SAVINGS
+  CHECKING
+  CREDIT
+}
+
+// Название сущности: Тип улицы
+enum StreetType {
+  STREET
+  AVENUE
+  BOULEVARD
+}
+
+// Название сущности: Тип банка
+enum BankType {
+  CENTRAL
+  COMMERCIAL
+  SAVINGS
+}
