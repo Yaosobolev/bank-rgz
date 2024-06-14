@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /reports/bank/{bankId}:
  *   get:
- *     summary: Get credits by bank ID
+ *     summary: Получайте кредиты по идентификатору банка
  *     tags: [Reports]
  *     parameters:
  *       - in: path
@@ -17,7 +17,7 @@ const prisma = new PrismaClient();
  *         description: The bank ID
  *     responses:
  *       200:
- *         description: List of credits
+ *         description: Список кредитов
  *         content:
  *           application/json:
  *             schema:
@@ -25,8 +25,9 @@ const prisma = new PrismaClient();
  *               items:
  *                 $ref: '#/components/schemas/CreditContract'
  */
-exports.getCreditsByBank = async (req: Request, res: Response) => {
+export const getCreditsByBank = async (req: Request, res: Response) => {
   const { bankId } = req.params;
+
   const credits = await prisma.creditContract.findMany({
     where: {
       account: {
@@ -42,6 +43,8 @@ exports.getCreditsByBank = async (req: Request, res: Response) => {
       account: { include: { bank: true } },
     },
   });
+
+  console.log("credits: ", credits);
   res.json(credits);
 };
 
@@ -49,7 +52,7 @@ exports.getCreditsByBank = async (req: Request, res: Response) => {
  * @swagger
  * /reports/currency/{currencyCode}:
  *   get:
- *     summary: Get credits by currency code
+ *     summary: Получайте кредиты по коду валюты
  *     tags: [Reports]
  *     parameters:
  *       - in: path
@@ -60,7 +63,7 @@ exports.getCreditsByBank = async (req: Request, res: Response) => {
  *         description: The currency code
  *     responses:
  *       200:
- *         description: List of credits
+ *         description: Список кредитов
  *         content:
  *           application/json:
  *             schema:
@@ -68,7 +71,7 @@ exports.getCreditsByBank = async (req: Request, res: Response) => {
  *               items:
  *                 $ref: '#/components/schemas/CreditContract'
  */
-exports.getCreditsByCurrency = async (req: Request, res: Response) => {
+export const getCreditsByCurrency = async (req: Request, res: Response) => {
   const { currencyCode } = req.params;
   const credits = await prisma.creditContract.findMany({
     where: {
@@ -92,7 +95,7 @@ exports.getCreditsByCurrency = async (req: Request, res: Response) => {
  * @swagger
  * /reports/expert/{expertId}:
  *   get:
- *     summary: Get credits by expert ID
+ *     summary: Получайте кредиты по идентификатору эксперта
  *     tags: [Reports]
  *     parameters:
  *       - in: path
@@ -103,7 +106,7 @@ exports.getCreditsByCurrency = async (req: Request, res: Response) => {
  *         description: The expert ID
  *     responses:
  *       200:
- *         description: List of credits
+ *         description: Список кредитов
  *         content:
  *           application/json:
  *             schema:
@@ -111,7 +114,7 @@ exports.getCreditsByCurrency = async (req: Request, res: Response) => {
  *               items:
  *                 $ref: '#/components/schemas/CreditContract'
  */
-exports.getCreditsByExpert = async (req: Request, res: Response) => {
+export const getCreditsByExpert = async (req: Request, res: Response) => {
   const { expertId } = req.params;
   const credits = await prisma.creditContract.findMany({
     where: { creditExpertId: parseInt(expertId) },
@@ -129,7 +132,7 @@ exports.getCreditsByExpert = async (req: Request, res: Response) => {
  * @swagger
  * /reports/purpose/{bankId}/{purposeId}:
  *   get:
- *     summary: Get credits by bank ID and purpose ID
+ *     summary: Получайте кредиты по идентификатору банка и идентификатору цели
  *     tags: [Reports]
  *     parameters:
  *       - in: path
@@ -146,7 +149,7 @@ exports.getCreditsByExpert = async (req: Request, res: Response) => {
  *         description: The purpose ID
  *     responses:
  *       200:
- *         description: List of credits
+ *         description: Список кредитов
  *         content:
  *           application/json:
  *             schema:
@@ -154,7 +157,10 @@ exports.getCreditsByExpert = async (req: Request, res: Response) => {
  *               items:
  *                 $ref: '#/components/schemas/CreditContract'
  */
-exports.getCreditsByPurposeAndBank = async (req: Request, res: Response) => {
+export const getCreditsByPurposeAndBank = async (
+  req: Request,
+  res: Response
+) => {
   const { bankId, purposeId } = req.params;
   const credits = await prisma.creditContract.findMany({
     where: {

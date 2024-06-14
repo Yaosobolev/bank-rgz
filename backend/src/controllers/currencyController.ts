@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /currencies/{currencyId}:
  *   put:
- *     summary: Update currency exchange rate
+ *     summary: Обновить курс обмена валюты
  *     tags: [Currencies]
  *     parameters:
  *       - in: path
@@ -26,13 +26,13 @@ const prisma = new PrismaClient();
  *                 type: number
  *     responses:
  *       200:
- *         description: The updated currency
+ *         description: Обновленная валюта
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Currency'
  */
-exports.updateCurrencyRate = async (req: Request, res: Response) => {
+export const updateCurrencyRate = async (req: Request, res: Response) => {
   const { currencyId } = req.params;
   const { exchangeRate } = req.body;
   const updatedCurrency = await prisma.currency.update({

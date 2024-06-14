@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { updateCurrencyRate } from "../controllers/currencyController";
 const currencyController = require("../controllers/currencyController");
 
 const currencyRoutes = Router();
@@ -14,9 +15,6 @@ const currencyRoutes = Router();
  * @route PUT /currencies/:currencyId
  * @description Обновить курс валюты
  */
-currencyRoutes.put(
-  "/currencies/:currencyId",
-  currencyController.updateCurrencyRate
-);
+currencyRoutes.put("/currencies/:currencyId", updateCurrencyRate);
 
 export default currencyRoutes;

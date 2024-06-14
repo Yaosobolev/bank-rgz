@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /credits:
  *   post:
- *     summary: Add a new credit contract
+ *     summary: Добавить новый кредитный договор
  *     tags: [Credits]
  *     requestBody:
  *       required: true
@@ -38,13 +38,13 @@ const prisma = new PrismaClient();
  *                 type: integer
  *     responses:
  *       200:
- *         description: The created credit contract
+ *         description: Созданный кредитный договор
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CreditContract'
  */
-exports.addCredit = async (req: Request, res: Response) => {
+export const addCredit = async (req: Request, res: Response) => {
   const {
     number,
     issueDate,
@@ -78,7 +78,7 @@ exports.addCredit = async (req: Request, res: Response) => {
  * @swagger
  * /credits/{clientId}:
  *   get:
- *     summary: Get credit contracts by client ID
+ *     summary: Получить кредитные договоры по идентификатору клиента
  *     tags: [Credits]
  *     parameters:
  *       - in: path
@@ -89,7 +89,7 @@ exports.addCredit = async (req: Request, res: Response) => {
  *         description: The client ID
  *     responses:
  *       200:
- *         description: List of credit contracts
+ *         description: Перечень кредитных договоров
  *         content:
  *           application/json:
  *             schema:
@@ -97,7 +97,7 @@ exports.addCredit = async (req: Request, res: Response) => {
  *               items:
  *                 $ref: '#/components/schemas/CreditContract'
  */
-exports.getCreditsByClient = async (req: Request, res: Response) => {
+export const getCreditsByClient = async (req: Request, res: Response) => {
   const { clientId } = req.params;
   const credits = await prisma.creditContract.findMany({
     where: { clientId: parseInt(clientId) },
@@ -115,7 +115,7 @@ exports.getCreditsByClient = async (req: Request, res: Response) => {
  * @swagger
  * /credits/{creditId}:
  *   put:
- *     summary: Update a credit contract
+ *     summary: Обновить кредитный договор
  *     tags: [Credits]
  *     parameters:
  *       - in: path
@@ -141,13 +141,13 @@ exports.getCreditsByClient = async (req: Request, res: Response) => {
  *                 type: number
  *     responses:
  *       200:
- *         description: The updated credit contract
+ *         description: Обновленный кредитный договор
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CreditContract'
  */
-exports.updateCredit = async (req: Request, res: Response) => {
+export const updateCredit = async (req: Request, res: Response) => {
   const { creditId } = req.params;
   const { creditAmount, usagePeriod, interestRate, monthlyPayment } = req.body;
   const updatedCredit = await prisma.creditContract.update({

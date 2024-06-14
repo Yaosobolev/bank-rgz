@@ -1,5 +1,5 @@
 import { Router } from "express";
-const accountController = require("../controllers/accountController");
+import { getAccountsByClient } from "../controllers/accountController";
 
 const accountRoutes = Router();
 /**
@@ -13,6 +13,6 @@ const accountRoutes = Router();
  * @route GET /accounts/:clientId
  * @description Получить счета по ID клиента
  */
-accountRoutes.get("/accounts/:clientId", accountController.getAccountsByClient);
+accountRoutes.get("/accounts/:clientId", getAccountsByClient);
 
 export default accountRoutes;

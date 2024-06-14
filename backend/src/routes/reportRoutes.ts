@@ -1,4 +1,10 @@
 import { Router } from "express";
+import {
+  getCreditsByBank,
+  getCreditsByCurrency,
+  getCreditsByExpert,
+  getCreditsByPurposeAndBank,
+} from "../controllers/reportController";
 const reportController = require("../controllers/reportController");
 const reportRoutes = Router();
 /**
@@ -12,30 +18,24 @@ const reportRoutes = Router();
  * @route GET /reports/bank/:bankId
  * @description Получить кредиты по ID банка
  */
-reportRoutes.get("/reports/bank/:bankId", reportController.getCreditsByBank);
+reportRoutes.get("/reports/bank/:bankId", getCreditsByBank);
 /**
  * @route GET /reports/currency/:currencyCode
  * @description Получить кредиты по коду валюты
  */
-reportRoutes.get(
-  "/reports/currency/:currencyCode",
-  reportController.getCreditsByCurrency
-);
+reportRoutes.get("/reports/currency/:currencyCode", getCreditsByCurrency);
 /**
  * @route GET /reports/expert/:expertId
  * @description Получить кредиты по ID кредитного эксперта
  */
-reportRoutes.get(
-  "/reports/expert/:expertId",
-  reportController.getCreditsByExpert
-);
+reportRoutes.get("/reports/expert/:expertId", getCreditsByExpert);
 /**
  * @route GET /reports/purpose/:bankId/:purposeId
  * @description Получить кредиты по ID банка и цели кредита
  */
 reportRoutes.get(
   "/reports/purpose/:bankId/:purposeId",
-  reportController.getCreditsByPurposeAndBank
+  getCreditsByPurposeAndBank
 );
 
 export default reportRoutes;

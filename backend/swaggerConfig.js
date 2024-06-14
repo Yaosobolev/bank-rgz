@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:3000/api",
       },
     ],
     components: {
@@ -56,7 +56,7 @@ const options = {
       },
     },
   },
-  apis: ["./routes/*.js"], // путь к файлам с вашими маршрутами
+  apis: ["./src/routes/*.ts", "./src/controllers/*.ts"], // путь к файлам с вашими маршрутами
 };
 
 const specs = swaggerJSDoc(options);

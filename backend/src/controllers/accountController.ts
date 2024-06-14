@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
  * @swagger
  * /accounts/{clientId}:
  *   get:
- *     summary: Get accounts by client ID
+ *     summary: Получить аккаунты по идентификатору клиента
  *     tags: [Accounts]
  *     parameters:
  *       - in: path
@@ -17,7 +17,7 @@ const prisma = new PrismaClient();
  *         description: The client ID
  *     responses:
  *       200:
- *         description: List of accounts
+ *         description: Список аккаунтов
  *         content:
  *           application/json:
  *             schema:
@@ -25,8 +25,9 @@ const prisma = new PrismaClient();
  *               items:
  *                 $ref: '#/components/schemas/Account'
  */
-exports.getAccountsByClient = async (req: Request, res: Response) => {
+export const getAccountsByClient = async (req: Request, res: Response) => {
   const { clientId } = req.params;
+  console.log(clientId);
   const accounts = await prisma.account.findMany({
     where: {
       creditContracts: {

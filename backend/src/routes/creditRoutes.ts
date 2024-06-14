@@ -1,4 +1,9 @@
 import { Router } from "express";
+import {
+  addCredit,
+  getCreditsByClient,
+  updateCredit,
+} from "../controllers/creditController";
 
 const creditController = require("../controllers/creditController");
 const creditRoutes = Router();
@@ -14,17 +19,17 @@ const creditRoutes = Router();
  * @description Добавить новый кредитный договор
  */
 
-creditRoutes.post("/credits", creditController.addCredit);
+creditRoutes.post("/credits", addCredit);
 /**
  * @route GET /credits/:clientId
  * @description Получить кредитные договоры по ID клиента
  */
-creditRoutes.get("/credits/:clientId", creditController.getCreditsByClient);
+creditRoutes.get("/credits/:clientId", getCreditsByClient);
 
 /**
  * @route PUT /credits/:creditId
  * @description Обновить кредитный договор
  */
-creditRoutes.put("/credits/:creditId", creditController.updateCredit);
+creditRoutes.put("/credits/:creditId", updateCredit);
 
 export default creditRoutes;
