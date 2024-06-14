@@ -30,9 +30,11 @@ export const getCreditsByBank = async (req: Request, res: Response) => {
 
   const credits = await prisma.creditContract.findMany({
     where: {
-      account: {
-        bank: {
-          id: parseInt(bankId),
+      creditExpert: {
+        employmentContracts: {
+          some: {
+            bankId: parseInt(bankId),
+          },
         },
       },
     },
@@ -40,11 +42,10 @@ export const getCreditsByBank = async (req: Request, res: Response) => {
       client: { include: { person: true } },
       creditExpert: { include: { person: true } },
       creditPurpose: true,
-      account: { include: { bank: true } },
     },
   });
 
-  console.log("credits: ", credits);
+  // console.log("credits: ", credits);
   res.json(credits);
 };
 
