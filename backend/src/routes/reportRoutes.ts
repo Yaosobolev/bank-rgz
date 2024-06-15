@@ -23,7 +23,10 @@ reportRoutes.get("/reports/bank/:bankId", getCreditsByBank);
  * @route GET /reports/currency/:currencyCode
  * @description Получить кредиты по коду валюты
  */
-reportRoutes.get("/reports/currency/:currencyCode", getCreditsByCurrency);
+reportRoutes.get(
+  "/reports/currency/:currencyCode/bank/:bankId",
+  getCreditsByCurrency
+);
 /**
  * @route GET /reports/expert/:expertId
  * @description Получить кредиты по ID кредитного эксперта

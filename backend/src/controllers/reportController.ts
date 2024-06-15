@@ -45,15 +45,14 @@ export const getCreditsByBank = async (req: Request, res: Response) => {
     },
   });
 
-  // console.log("credits: ", credits);
   res.json(credits);
 };
 
 /**
  * @swagger
- * /reports/currency/{currencyCode}:
+ * /reports/currency/{currencyCode}/bank/{bankId}:
  *   get:
- *     summary: Получайте кредиты по коду валюты
+ *     summary: Получайте кредиты по коду валюты и банку
  *     tags: [Reports]
  *     parameters:
  *       - in: path
@@ -62,6 +61,12 @@ export const getCreditsByBank = async (req: Request, res: Response) => {
  *           type: string
  *         required: true
  *         description: The currency code
+ *       - in: path
+ *         name: bankId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Идентификатор банка
  *     responses:
  *       200:
  *         description: Список кредитов
@@ -73,12 +78,19 @@ export const getCreditsByBank = async (req: Request, res: Response) => {
  *                 $ref: '#/components/schemas/CreditContract'
  */
 export const getCreditsByCurrency = async (req: Request, res: Response) => {
-  const { currencyCode } = req.params;
+  const { currencyCode, bankId } = req.params;
   const credits = await prisma.creditContract.findMany({
     where: {
       account: {
         currency: {
           code: currencyCode,
+        },
+      },
+      creditExpert: {
+        employmentContracts: {
+          some: {
+            bankId: parseInt(bankId),
+          },
         },
       },
     },
@@ -123,7 +135,6 @@ export const getCreditsByExpert = async (req: Request, res: Response) => {
       client: { include: { person: true } },
       creditExpert: { include: { person: true } },
       creditPurpose: true,
-      account: { include: { bank: true } },
     },
   });
   res.json(credits);
@@ -165,9 +176,11 @@ export const getCreditsByPurposeAndBank = async (
   const { bankId, purposeId } = req.params;
   const credits = await prisma.creditContract.findMany({
     where: {
-      account: {
-        bank: {
-          id: parseInt(bankId),
+      creditExpert: {
+        employmentContracts: {
+          some: {
+            bankId: parseInt(bankId),
+          },
         },
       },
       creditPurposeId: parseInt(purposeId),
@@ -176,7 +189,6 @@ export const getCreditsByPurposeAndBank = async (
       client: { include: { person: true } },
       creditExpert: { include: { person: true } },
       creditPurpose: true,
-      account: { include: { bank: true } },
     },
   });
   res.json(credits);
