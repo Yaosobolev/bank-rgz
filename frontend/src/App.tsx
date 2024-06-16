@@ -1,18 +1,9 @@
-import { useState } from "react";
-import "./App.css";
-import { Button } from "./components/ui/button";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <Button
-        onClick={() => setCount((prev) => prev + 1)}
-        className="text-red-200"
-      >
-        {count}
-      </Button>
+      <Outlet />
     </>
   );
 }

@@ -10,6 +10,7 @@ import creditRoutes from "./routes/creditRoutes";
 import currencyRoutes from "./routes/currencyRoutes";
 import reportRoutes from "./routes/reportRoutes";
 import accountRoutes from "./routes/accountRoutes";
+import authorizationRoutes from "./routes/authorizationRoutes";
 // import testRouter from "./routes/testRouter";
 
 // import { errorMiddleware } from "./middleware/error.middleware";
@@ -42,6 +43,7 @@ app.use("/api", creditRoutes);
 app.use("/api", currencyRoutes);
 app.use("/api", reportRoutes);
 app.use("/api", accountRoutes);
+app.use("/api", authorizationRoutes);
 
 app.get("/", (req, res) => {
   const clientIP = req.ip;

@@ -53,6 +53,12 @@ const options = {
             },
           },
         },
+        Login: {
+          type: "object",
+          properties: {
+            login: { type: "string" },
+          },
+        },
       },
     },
   },
