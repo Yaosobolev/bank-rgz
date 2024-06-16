@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useLogin } from "@/api/hooks/useAuth";
 
 const FormSchema = z.object({
   username: z.string().min(1, {
@@ -27,8 +28,11 @@ export const LoginForm: React.FC = () => {
     },
   });
 
+  const loginMutation = useLogin();
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log("data: ", data);
+    loginMutation.mutate(data);
   }
 
   return (
