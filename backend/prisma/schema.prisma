@@ -11,7 +11,7 @@ datasource db {
 model CreditContract {
   id              Int           @id @default(autoincrement())
   number          String
-  issueDate       DateTime
+  issueDate       String
   creditAmount    Float
   usagePeriod     Int
   interestRate    Float

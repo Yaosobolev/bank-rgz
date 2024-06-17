@@ -19,7 +19,6 @@ const prisma = new PrismaClient();
  *                 type: string
  *               issueDate:
  *                 type: string
- *                 format: date-time
  *               creditAmount:
  *                 type: number
  *               usagePeriod:
@@ -102,7 +101,7 @@ export const getCreditsByClient = async (req: Request, res: Response) => {
   const credits = await prisma.creditContract.findMany({
     where: { clientId: parseInt(clientId) },
     include: {
-      client: true,
+      client: { include: { person: true } },
       creditExpert: true,
       creditPurpose: true,
       account: true,

@@ -40,10 +40,10 @@ export const getCreditsByBank = async (req: Request, res: Response) => {
     },
     include: {
       client: { include: { person: true } },
-      creditExpert: { include: { person: true } },
-      creditPurpose: true,
     },
   });
+
+  const {} = credits;
 
   res.json(credits);
 };
